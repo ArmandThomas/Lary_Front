@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Alert, Pressable, useWindowDimensions} from "react-native";
+import {Pressable, Alert, useWindowDimensions, KeyboardAvoidingView} from "react-native";
+import {useState} from 'react';
 import styled from "styled-components/native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UrlLary} from "../utils";
@@ -38,14 +38,18 @@ export const Connexion = ({navigation, setIsLogin}) => {
     }
 
     return (
-        <Container>
-            <Logo
-                source={require('../assets/images/logo_lary_blanc.png')}
-                resizeMode="contain"
-                imageWidth={imageWidth}
-            />
+        <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            style={{ flex: 1 }}
+        >
+            <Container>
+                <Logo
+                    source={require('../assets/images/logo_lary_blanc.png')}
+                    resizeMode="contain"
+                    imageWidth={imageWidth}
+                />
 
-            <TitlePage>Connexion</TitlePage>
+                <TitlePage>Connexion</TitlePage>
 
             <InputContainer>
                 <Icon name="user" size={30} color="#33efad" />
@@ -74,22 +78,23 @@ export const Connexion = ({navigation, setIsLogin}) => {
                 <ButtonText>Connexion</ButtonText>
             </ButtonContainer>
 
-            <QuestionText>Vous n'avez pas de compte ?</QuestionText>
-            <Pressable onPress={() => navigation.navigate('Inscription')}>
-                <LinkText>Inscrivez-vous ici !</LinkText>
-            </Pressable>
-        </Container>
+                <QuestionText>Vous n'avez pas de compte ?</QuestionText>
+                <Pressable onPress={() => navigation.navigate('Inscription')}>
+                    <LinkText>Inscrivez-vous ici !</LinkText>
+                </Pressable>
+            </Container>
+        </KeyboardAvoidingView>
     )
 }
 
-const Container = styled.View`
+export const Container = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background: #1E1E1E;
 `;
 
-const Logo = styled.Image`
+export const Logo = styled.Image`
   margin-bottom: 10px;
   width: ${props => props.imageWidth}px;
   height : 180px;
@@ -97,7 +102,7 @@ const Logo = styled.Image`
   margin-top: -30px;
 `;
 
-const TitlePage = styled.Text`
+export const TitlePage = styled.Text`
   //font-family: 'Roboto';
   font-size: 32px;
   font-weight: normal;
@@ -108,35 +113,36 @@ const TitlePage = styled.Text`
   padding: 10px 0;
 `;
 
-const InputContainer = styled.View`
+export const InputContainer = styled.View`
     width: 80%;
     flex-direction: row;
     align-items: center;
     border-bottom-color: #f5f5f5;
     border-bottom-width: 2px;
-    margin: 25px 0;
+    margin: 20px 0;
     padding-bottom: 10px;
     align-self: center;
 `;
 
-const Input = styled.TextInput`
+export const Input = styled.TextInput`
   width: 100%;
-  font-size: 25px;
+  font-size: 24px;
   font-weight: normal;
   line-height: 32px;
   font-style: normal;
   color: #ffffff;
   padding-left: 10px;
+  padding-right: 20px;
 `;
 
-const ButtonContainer = styled.Pressable`
+export const ButtonContainer = styled.Pressable`
   background: #33efad;
   border: 2px solid #33efad;
   border-radius: 5px;
-  margin: 20px 0;
+  margin: 30px 0;
 `;
 
-const ButtonText = styled.Text`
+export const ButtonText = styled.Text`
     font-size: 22px;
     font-weight: normal;
     font-style: normal;
@@ -145,16 +151,16 @@ const ButtonText = styled.Text`
     padding: 10px 80px;
 `;
 
-const QuestionText = styled.Text`
+export const QuestionText = styled.Text`
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
     text-align: center;
     color: #ffffff;
-    margin-top: 30px;
+    margin-top: 20px;
 `;
 
-const LinkText = styled.Text`
+export const LinkText = styled.Text`
     font-size: 16px;
     font-weight: normal;
     font-style: normal;
