@@ -69,8 +69,11 @@ export default function App() {
                                 }
                             </Stack.Screen>
                             <Stack.Screen
-                                name="Inscription"
-                                component={Inscription} />
+                                name="Inscription">
+                                {
+                                    props => <Inscription {...props} setIsLogin={setIsLogin} />
+                                }
+                            </Stack.Screen>
                         </Stack.Navigator>
                     </NavigationContainer>
   );

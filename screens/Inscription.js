@@ -1,16 +1,43 @@
-import {Pressable, KeyboardAvoidingView, useWindowDimensions} from "react-native";
+import {Pressable, KeyboardAvoidingView, useWindowDimensions, Alert} from "react-native";
 import styled from "styled-components/native";
 import {ButtonContainer, ButtonText, Input, InputContainer, LinkText, Logo, QuestionText, TitlePage} from "./Connexion";
 import {useState} from "react";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {UrlLary} from "../utils";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const Inscription = ({navigation}) => {
+export const Inscription = ({navigation, setIsLogin}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
 
     const width = useWindowDimensions().width;
     const imageWidth = width * 0.9;
+
+    const handleSignIn = async () => {
+        try {
+            const request = await fetch(`${UrlLary}/users/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body : JSON.stringify({
+                    email,
+                    password,
+                    confirmPassword : passwordConfirm
+                })
+            });
+            const response = await request.json();
+            if (response.jwt) {
+                await AsyncStorage.setItem('token', response.jwt);
+                return setIsLogin(true);
+            } else {
+                Alert.alert('Erreur', "Une erreur est survenue lors de la connexion");
+            }
+        } catch (e) {
+            Alert.alert('Erreur', e.message);
+        }
+    }
 
     return (
         <KeyboardAvoidingView
@@ -58,7 +85,9 @@ export const Inscription = ({navigation}) => {
                     />
                 </InputContainer>
 
-                <ButtonContainer>
+                <ButtonContainer
+                    onPress={handleSignIn}
+                >
                     <ButtonText>S'inscrire</ButtonText>
                 </ButtonContainer>
 
