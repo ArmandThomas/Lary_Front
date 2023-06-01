@@ -13,7 +13,7 @@ export const Connexion = ({navigation, setIsLogin}) => {
     const width = useWindowDimensions().width;
     const imageWidth = width * 0.9;
 
-    const handleSignIn = async () => {
+    const handleLogIn = async () => {
         try {
             const request = await fetch(`${UrlLary}/users/login`, {
                 method: 'POST',
@@ -73,7 +73,7 @@ export const Connexion = ({navigation, setIsLogin}) => {
             </InputContainer>
 
             <ButtonContainer
-                onPress={handleSignIn}
+                onPress={handleLogIn}
             >
                 <ButtonText>Connexion</ButtonText>
             </ButtonContainer>
@@ -103,7 +103,7 @@ export const Logo = styled.Image`
 `;
 
 export const TitlePage = styled.Text`
-  //font-family: 'Roboto';
+  //font-family: 'Roboto-Regular';
   font-size: 32px;
   font-weight: normal;
   line-height: 27px;
