@@ -1,6 +1,5 @@
-import React from 'react';
 import {Pressable, Alert, useWindowDimensions, KeyboardAvoidingView} from "react-native";
-import React, {useState} from 'react';
+import {useState} from 'react';
 import styled from "styled-components/native";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UrlLary} from "../utils";
