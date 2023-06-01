@@ -1,0 +1,1 @@
+export const UrlLary = 'https://betawsdiamantbackend.eu-4.evennode.com/api';
