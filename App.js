@@ -5,11 +5,9 @@ import {Camera} from "./screens/Camera";
 import {Home} from "./screens/Home";
 import {useEffect, useState} from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {View} from "react-native";
 import { createStackNavigator } from '@react-navigation/stack';
 import {Connexion} from "./screens/Connexion";
 import {Inscription} from "./screens/Inscription";
-import styled from "styled-components/native";
 
 const Stack = createStackNavigator();
 
@@ -65,8 +63,11 @@ export default function App() {
                         <Stack.Navigator>
                             <Stack.Screen
                                 name="Connexion"
-                                component={Connexion}
-                            />
+                            >
+                                {
+                                    props => <Connexion {...props} setIsLogin={setIsLogin} />
+                                }
+                            </Stack.Screen>
                             <Stack.Screen
                                 name="Inscription"
                                 component={Inscription} />

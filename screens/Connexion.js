@@ -1,12 +1,41 @@
-import React from 'react';
-import {Text, TextInput, Pressable, Image, useWindowDimensions} from "react-native";
+import React, {useState} from 'react';
+import {Alert, Pressable, useWindowDimensions} from "react-native";
 import styled from "styled-components/native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {UrlLary} from "../utils";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const Connexion = ({navigation}) => {
+export const Connexion = ({navigation, setIsLogin}) => {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     const width = useWindowDimensions().width;
     const imageWidth = width * 0.9;
+
+    const handleSignIn = async () => {
+        try {
+            const request = await fetch(`${UrlLary}/users/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body : JSON.stringify({
+                    email,
+                    password
+                })
+            });
+            const response = await request.json();
+            if (response.jwt) {
+                await AsyncStorage.setItem('token', response.jwt);
+                return setIsLogin(true);
+            } else {
+                Alert.alert('Erreur', "Une erreur est survenue lors de la connexion");
+            }
+        } catch (e) {
+            Alert.alert('Erreur', e.message);
+        }
+    }
 
     return (
         <Container>
@@ -23,6 +52,8 @@ export const Connexion = ({navigation}) => {
                 <Input
                     placeholder="Email"
                     placeholderTextColor="#9E9E9E"
+                    value={email}
+                    onChangeText={setEmail}
                 />
             </InputContainer>
 
@@ -32,10 +63,14 @@ export const Connexion = ({navigation}) => {
                     placeholder="Mot de passe"
                     placeholderTextColor="#9E9E9E"
                     secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
                 />
             </InputContainer>
 
-            <ButtonContainer>
+            <ButtonContainer
+                onPress={handleSignIn}
+            >
                 <ButtonText>Connexion</ButtonText>
             </ButtonContainer>
 
