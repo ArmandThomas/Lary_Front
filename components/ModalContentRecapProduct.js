@@ -1,11 +1,12 @@
 import { useState } from "react";
-import {Alert, Image, Platform, Text, View} from "react-native";
+import {Alert, FlatList, Image, Platform, ScrollView, Text, View} from "react-native";
 import styled from "styled-components/native";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import {Fontisto} from "@expo/vector-icons";
-import {UrlLary} from "../utils";
+import {FontAwesome, Fontisto} from "@expo/vector-icons";
+import {productTypes, UrlLary} from "../utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Calendar from "expo-calendar";
+import {ButtonStockage} from "./ButtonStockage";
 
 export const ModalContentRecapProduct = ({product, closeModal}) => {
 
@@ -13,6 +14,7 @@ export const ModalContentRecapProduct = ({product, closeModal}) => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [date, setDate] = useState(new Date());
     const [updateDate, setUpdateDate] = useState(false);
+    const [selectedStockage, setSelectedStockage] = useState('Tout');
 
     const getPermissionsToAccessUserAgenda = async () => {
         const { status } = await Calendar.requestCalendarPermissionsAsync();
@@ -28,9 +30,9 @@ export const ModalContentRecapProduct = ({product, closeModal}) => {
             quantity,
             barcode : product.barcode,
             expirationDate: updateDate ? date : null,
+            stockage: selectedStockage
         }
         const token = await AsyncStorage.getItem('token');
-
 
         if (!token) {
             return Alert.alert('Erreur', "Vous devez être connecté pour ajouter un produit");
@@ -76,7 +78,7 @@ export const ModalContentRecapProduct = ({product, closeModal}) => {
     }
 
     return (
-        <View>
+        <ScrollView>
             <ContainerRecapProduct>
                 <Image
                     style={{width: 120, height : 180}}
@@ -150,6 +152,23 @@ export const ModalContentRecapProduct = ({product, closeModal}) => {
                     }
                 </Section>
             </ContainerCenteredText>
+            <Section>
+                <ContainerCenteredText>
+                    <Text>Choisissez ou se trouve le produit : </Text>
+                </ContainerCenteredText>
+                <FilterProductsContent>
+                    <FlatList
+                        horizontal
+                        data = {productTypes}
+                        renderItem={({item}) => (
+                            <ButtonStockage key={item} currentFilter={selectedStockage} data={item} updateFilter={setSelectedStockage}/>
+                        )}
+                        showsHorizontalScrollIndicator={false}
+                        style={{paddingLeft: 15}}
+                    />
+                </FilterProductsContent>
+
+            </Section>
             <ActionContainer>
                 <ContainerButton
                     onPress={handleSubmitAddProduct}
@@ -157,7 +176,7 @@ export const ModalContentRecapProduct = ({product, closeModal}) => {
                     <LabelButton>Ajouter</LabelButton>
                 </ContainerButton>
             </ActionContainer>
-        </View>
+        </ScrollView>
     )
 
 
@@ -231,6 +250,11 @@ const ActionContainer = styled.View`
     align-items: center;
     margin-top: 20px;
 `;
-
+const FilterProductsContent = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0 10px;
+`;
 
 

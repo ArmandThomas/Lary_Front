@@ -1,8 +1,26 @@
 import styled from "styled-components/native";
-import {Image, Text, useWindowDimensions, View} from "react-native";
+import {Alert, Image, Text, useWindowDimensions} from "react-native";
 import {Ionicons, MaterialIcons} from "@expo/vector-icons";
+import {useEffect, useState} from "react";
 
-export const CardProduct = ({product}) => {
+export const CardProduct = ({product, updateQuantityMethod, deleteProductMethod}) => {
+
+    const [quantity, setQuantity] = useState(product.quantity);
+    const [actionBeDone, setActionBeDone] = useState(false);
+
+    useEffect(() => {
+        if (actionBeDone) {
+            updateQuantityMethod(product._id, quantity);
+        }
+    }, [quantity])
+
+    const updateQuantity = (quantity) => {
+        if (quantity === 0) {
+            return Alert.alert("Erreur", "La quantité ne peut pas être égale à 0");
+        } else {
+            setQuantity(quantity);
+        }
+    }
 
     const widthScreen = useWindowDimensions().width;
 
@@ -21,9 +39,25 @@ export const CardProduct = ({product}) => {
                         <TitleBrand numberOfLines={1}>{product.brand}</TitleBrand>
                     </ContainerLeft>
                     <ContainerIconsQuantity>
-                        <Ionicons name="remove-circle-outline" size={24} color="black" />
-                        <QuantityText>{product.quantity}</QuantityText>
-                        <Ionicons name="add-circle-outline" size={24} color="black" />
+                        <Ionicons
+                            name="remove-circle-outline"
+                            size={24}
+                            color="black"
+                            onPress={() => {
+                                setActionBeDone(true);
+                                updateQuantity(quantity - 1);
+                            }}
+                        />
+                        <QuantityText>{quantity}</QuantityText>
+                        <Ionicons
+                            name="add-circle-outline"
+                            size={24}
+                            color="black"
+                            onPress={() => {
+                                setActionBeDone(true);
+                                updateQuantity(quantity + 1);
+                            }}
+                        />
                     </ContainerIconsQuantity>
                 </ContainerWithLeftStuff>
                 <ContainerWithLeftStuff>
@@ -41,7 +75,12 @@ export const CardProduct = ({product}) => {
                         }
                     </ContainerLeft>
                     <ContainerDeleteIcon>
-                        <MaterialIcons name="delete" size={24} color="#33efad"  />
+                        <MaterialIcons
+                            name="delete"
+                            size={24}
+                            color="#33efad"
+                            onPress={() => deleteProductMethod(product._id)}
+                        />
                     </ContainerDeleteIcon>
                 </ContainerWithLeftStuff>
 
