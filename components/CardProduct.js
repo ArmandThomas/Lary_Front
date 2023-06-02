@@ -41,7 +41,7 @@ export const CardProduct = ({product, updateQuantityMethod, deleteProductMethod}
                     <ContainerIconsQuantity>
                         <Ionicons
                             name="remove-circle-outline"
-                            size={24}
+                            size={26}
                             color="black"
                             onPress={() => {
                                 setActionBeDone(true);
@@ -51,7 +51,7 @@ export const CardProduct = ({product, updateQuantityMethod, deleteProductMethod}
                         <QuantityText>{quantity}</QuantityText>
                         <Ionicons
                             name="add-circle-outline"
-                            size={24}
+                            size={26}
                             color="black"
                             onPress={() => {
                                 setActionBeDone(true);
@@ -62,7 +62,7 @@ export const CardProduct = ({product, updateQuantityMethod, deleteProductMethod}
                 </ContainerWithLeftStuff>
                 <ContainerWithLeftStuff>
                     <ContainerLeft second>
-                        <Image
+                        <ImageProduct
                             source={{uri: `https://static.openfoodfacts.org/images/misc/nutriscore-${product.nutritionGrade}.png`}}
                             style={{width: 100, height: 50}}
                             resizeMode="contain"
@@ -77,7 +77,7 @@ export const CardProduct = ({product, updateQuantityMethod, deleteProductMethod}
                     <ContainerDeleteIcon>
                         <MaterialIcons
                             name="delete"
-                            size={24}
+                            size={26}
                             color="#33efad"
                             onPress={() => deleteProductMethod(product._id)}
                         />
@@ -92,7 +92,7 @@ export const CardProduct = ({product, updateQuantityMethod, deleteProductMethod}
 }
 
 const ContainerCardProduct = styled.View`
-  padding: 20px 20px;
+  padding: 20px 10px;
   flex-direction: row;
   border-bottom-width: 2px;
   border-bottom-color: #33efad;
@@ -105,6 +105,7 @@ const ContainerTitleBrand = styled.View`
 const TitleProduct = styled.Text`
   font-size: 17px;
   font-weight: bold;
+  
 `;
 
 const TitleBrand = styled.Text`
@@ -137,4 +138,8 @@ const ContainerDeleteIcon = styled.View`
 
 const QuantityText = styled.Text`
   margin: 0 5px;
+`;
+
+const ImageProduct = styled.Image`
+    margin: 5px 0;
 `;

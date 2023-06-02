@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import styled from "styled-components/native";
 import { Camera as ExpoCamera } from 'expo-camera';
 import {AntDesign} from "@expo/vector-icons";
-import {ModalContentRecapProduct} from "../components/ModalContentRecapProduct";
+import {ModalRecapProduct} from "../components/ModalRecapProduct";
 import { useIsFocused } from "@react-navigation/native";
 
 export const Camera = () => {
@@ -86,7 +86,7 @@ export const Camera = () => {
                         </View>
                     </CloseBoxModal>
                 </ActionModal>
-                <ModalContentRecapProduct product={dataModal} closeModal={closeModal} />
+                <ModalRecapProduct product={dataModal} closeModal={closeModal} />
 
             </Modal>
             {
