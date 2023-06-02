@@ -1,14 +1,16 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from "@react-navigation/native";
-import { Entypo } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
 import {Camera} from "./screens/Camera";
-import {Home} from "./screens/Home";
+import {Products} from "./screens/Products";
 import {useEffect, useState} from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
 import {Connexion} from "./screens/Connexion";
 import {Inscription} from "./screens/Inscription";
 import {UrlLary} from "./utils";
+import {Profil} from "./screens/Profil";
 
 const Stack = createStackNavigator();
 
@@ -35,56 +37,69 @@ export default function App() {
         })
     }, [])
 
-  return (
-              isLogin ?
-                  <NavigationContainer>
-                      <Tab.Navigator
-                          screenOptions={
+    return (
+        isLogin ? (
+            <NavigationContainer>
+                <Tab.Navigator
+                    screenOptions={
+                        {
+                            headerShown: false,
+                            "tabBarActiveTintColor": "#33efab",
+                            "tabBarInactiveTintColor": "gray",
+                            "tabBarStyle": [
                               {
-                                  "tabBarActiveTintColor": "#FF8C00",
-                                  "tabBarInactiveTintColor": "gray",
-                                  "tabBarStyle": [
-                                      {
-                                          "display": "flex"
-                                      },
-                                      null
-                                  ]
-                              }
+                                  "display": "flex",
+                                  "paddingTop": 10,
+                              },
+                              null
+                            ]
+                        }
+                    }
+                >
+                    <Tab.Screen
+                        name="Produits"
+                        options={{
+                          tabBarIcon: ({ color }) => {
+                              return <MaterialCommunityIcons name="fridge" size={28} color={color} />
                           }
-                      >
-                          <Tab.Screen name="Home" options={{
-                              headerShown: false,
-                              tabBarIcon: ({ color }) => {
-                                  return <Entypo name="home" size={24} color={color} />
-                              }
-                          }} component={Home} />
-                          <Tab.Screen
-                              name="Camera"
-                              options={{
-                                  headerShown: false,
-                                  tabBarIcon: ({color}) => {
-                                      return <Entypo name="camera" size={24} color={color} />
-                                  }
-                              }} component={Camera} />
-                      </Tab.Navigator>
-                  </NavigationContainer>
-                  :
-                    <NavigationContainer>
-                        <Stack.Navigator>
-                            <Stack.Screen
-                                name="Connexion"
-                            >
-                                {
-                                    props => <Connexion {...props} setIsLogin={setIsLogin} />
-                                }
-                            </Stack.Screen>
-                            <Stack.Screen
-                                name="Inscription">
-                                {
-                                    props => <Inscription {...props} setIsLogin={setIsLogin} />
-                                }
-                            </Stack.Screen>
-                        </Stack.Navigator>
-                    </NavigationContainer>
-  );
+                        }} component={Products}
+                    />
+                    <Tab.Screen
+                        name="Scan"
+                        options={{
+                            tabBarIcon: ({color}) => {
+                              return <MaterialCommunityIcons name="barcode-scan" size={28} color={color} />
+                            }
+                        }} component={Camera}
+                    />
+                    <Tab.Screen
+                        name="Profile"
+                        options={{
+                            tabBarIcon: ({color}) => {
+                              return <FontAwesome name="user" size={24} color={color} />
+                            }
+                        }} component={Profil}
+                    />
+                </Tab.Navigator>
+            </NavigationContainer>
+            ) : (
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        name="Connexion"
+                    >
+                        {
+                            props => <Connexion {...props} setIsLogin={setIsLogin} />
+                        }
+                    </Stack.Screen>
+                    <Stack.Screen
+                        name="Inscription">
+                        {
+                            props => <Inscription {...props} setIsLogin={setIsLogin} />
+                        }
+                    </Stack.Screen>
+                </Stack.Navigator>
+            </NavigationContainer>
+        )
+    );
 }
