@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView, View} from 'react-native';
+import {SafeAreaView, Platform, StatusBar} from 'react-native';
 import styled from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
 import Logo from '../assets/images/logo_lary_blanc.png';
@@ -7,7 +7,11 @@ import Logo from '../assets/images/logo_lary_blanc.png';
 export const NavBar = () => {
 
     return (
-        <SafeArea>
+        <SafeArea
+            style={{
+                paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0
+            }}
+        >
             <NavbarContainer>
                 <LogoContainer>
                     <LogoImage source={Logo} />
@@ -21,6 +25,7 @@ export const NavBar = () => {
 const SafeArea = styled(SafeAreaView)`
   background-color: #33efab;
   width: 100%;
+  
 `;
 
 const NavbarContainer = styled.View`
