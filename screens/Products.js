@@ -15,7 +15,7 @@ export const Products = () => {
     const [filterProducts, setFilterProducts] = useState('Tout');
     const [homeName, setHomeName] = useState('Ma maison');
 
-    const productTypes = ['Tout', 'Frigo', 'Congélateur', 'Placard'];
+    const productTypes = ['Tout', 'Frigo', 'Congélateur', 'Placard', 'Cave'];
 
     const refresh = async () => {
         setRefreshing(true);
@@ -77,6 +77,7 @@ export const Products = () => {
                         </FilterProductsButton>
                     )}
                     showsHorizontalScrollIndicator={false}
+                    style={{paddingLeft: 15}}
                 />
             </FilterProductsContent>
             <ScrollView
