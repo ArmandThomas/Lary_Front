@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createStackNavigator } from '@react-navigation/stack';
 import {Connexion} from "./screens/Connexion";
 import {Inscription} from "./screens/Inscription";
+import {UrlLary} from "./utils";
 
 const Stack = createStackNavigator();
 
@@ -20,7 +21,16 @@ export default function App() {
     useEffect(() => {
         AsyncStorage.getItem('token').then((value) => {
             if (value !== null) {
-                setIsLogin(true);
+                const request = fetch(`${UrlLary}/users/me`, {
+                    headers: {
+                        Authorization: `Bearer ${value}`
+                    }
+                });
+                request.then((response) => response.json()).then((response) => {
+                    if (response._id) {
+                        setIsLogin(true);
+                    }
+                })
             }
         })
     }, [])
