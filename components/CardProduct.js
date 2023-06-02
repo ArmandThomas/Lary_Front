@@ -21,9 +21,9 @@ export const CardProduct = ({product}) => {
                         <TitleBrand numberOfLines={1}>{product.brand}</TitleBrand>
                     </ContainerLeft>
                     <ContainerIconsQuantity>
-                        <Ionicons name="add-circle-outline" size={24} color="black" />
-                        <QuantityText>{product.quantity}</QuantityText>
                         <Ionicons name="remove-circle-outline" size={24} color="black" />
+                        <QuantityText>{product.quantity}</QuantityText>
+                        <Ionicons name="add-circle-outline" size={24} color="black" />
                     </ContainerIconsQuantity>
                 </ContainerWithLeftStuff>
                 <ContainerWithLeftStuff>
@@ -54,7 +54,6 @@ export const CardProduct = ({product}) => {
 
 const ContainerCardProduct = styled.View`
   padding: 20px 20px;
-  margin-top: 50px;
   flex-direction: row;
   border-bottom-width: 2px;
   border-bottom-color: #33efad;
