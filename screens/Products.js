@@ -6,6 +6,8 @@ import {UrlLary} from "../utils";
 import {CardProduct} from "../components/CardProduct";
 import {useEffect, useState} from "react";
 import { FontAwesome } from '@expo/vector-icons';
+import {productTypes} from "../utils";
+import {ButtonStockage} from "../components/ButtonStockage";
 
 export const Products = () => {
     const isFocused = useIsFocused();
@@ -14,7 +16,7 @@ export const Products = () => {
     const [filterProducts, setFilterProducts] = useState('Tout');
     const [homeName, setHomeName] = useState('Ma maison');
 
-    const productTypes = ['Tout', 'Frigo', 'Congélateur', 'Placard', 'Cave'];
+
 
     const refresh = async () => {
         setRefreshing(true);
@@ -92,6 +94,8 @@ export const Products = () => {
         }
     }
 
+    const filteredData = filterProducts === 'Tout' ? products : products.filter(product => product.where === filterProducts.toLocaleLowerCase());
+
     return (
         <Container>
             <HouseNameContent>
@@ -103,13 +107,7 @@ export const Products = () => {
                     horizontal
                     data = {productTypes}
                     renderItem={({item}) => (
-                        <FilterProductsButton
-                            key={item}
-                            active={filterProducts === item}
-                            onPress={() => setFilterProducts(item)}
-                        >
-                            <FilterProductsText active={filterProducts === item}>{item}</FilterProductsText>
-                        </FilterProductsButton>
+                        <ButtonStockage key={item} currentFilter={filterProducts} data={item} updateFilter={setFilterProducts}/>
                     )}
                     showsHorizontalScrollIndicator={false}
                     style={{paddingLeft: 15}}
@@ -123,7 +121,7 @@ export const Products = () => {
             >
                 <ContainerListCardProduct>
                     {
-                        products.map(product =>
+                        filteredData.map(product =>
                             <CardProduct
                                 key={product._id}
                                 product={product}
@@ -165,23 +163,6 @@ const FilterProductsContent = styled.View`
     align-items: center;
     justify-content: center;
     margin: 30px 0 10px;
-`;
-
-const FilterProductsButton = styled.TouchableOpacity`
-  border-color: ${props => props.active ? '#33efab' : '#888888'};
-  border-width: 0.5px;
-  border-style: solid;
-  border-radius: 18px;
-  padding: 10px 20px;
-  margin: 0 5px;
-  background: ${props => props.active ? '#33efab' : 'transparent'};
-`;
-
-const FilterProductsText = styled.Text`
-  font-size: 16px;
-  font-weight: normal;
-  font-style: normal;
-  color: ${props => props.active ? '#fff' : '#888888'};
 `;
 
 const ContainerListCardProduct = styled.View`
