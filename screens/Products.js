@@ -1,6 +1,5 @@
 import styled from "styled-components/native";
-import Searchbar from "../components/Searchbar";
-import {FlatList, RefreshControl, ScrollView, View} from "react-native";
+import {Alert, FlatList, RefreshControl, ScrollView, View} from "react-native";
 import {useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {UrlLary} from "../utils";
@@ -56,9 +55,45 @@ export const Products = () => {
         }
     }
 
+    const updateQuantity = async (productId, quantity) => {
+
+        const token = await AsyncStorage.getItem('token');
+        try {
+            const request = await fetch(`${UrlLary}/products/${productId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    quantity
+                })
+            });
+            return await request.json();
+        } catch (e) {
+            Alert.alert('Erreur', 'Une erreur est survenue lors de la mise à jour de la quantité');
+        }
+    }
+
+    const deleteProduct = async (productId) => {
+        const token = await AsyncStorage.getItem('token');
+        try {
+            const request = await fetch(`${UrlLary}/products/${productId}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                }
+            });
+            await request.json();
+            setProducts(products.filter(product => product._id !== productId));
+        } catch (e) {
+            Alert.alert('Erreur', 'Une erreur est survenue lors de la suppression du produit');
+        }
+    }
+
     return (
         <Container>
-            <Searchbar />
             <HouseNameContent>
                 <FontAwesome name="home" size={28} color="black" />
                 <HouseName>{homeName}</HouseName>
@@ -88,7 +123,13 @@ export const Products = () => {
             >
                 <ContainerListCardProduct>
                     {
-                        products.map(product => <CardProduct key={product._id} product={product} />)
+                        products.map(product =>
+                            <CardProduct
+                                key={product._id}
+                                product={product}
+                                updateQuantityMethod={updateQuantity}
+                                deleteProductMethod={deleteProduct}
+                            />)
                     }
                 </ContainerListCardProduct>
 
