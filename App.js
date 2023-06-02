@@ -11,6 +11,7 @@ import {Connexion} from "./screens/Connexion";
 import {Inscription} from "./screens/Inscription";
 import {UrlLary} from "./utils";
 import {Profil} from "./screens/Profil";
+import { NavBar } from "./components/NavBar";
 
 const Stack = createStackNavigator();
 
@@ -59,14 +60,17 @@ export default function App() {
                     <Tab.Screen
                         name="Produits"
                         options={{
-                          tabBarIcon: ({ color }) => {
+                            header: () => <NavBar />,
+                            headerShown: true,
+                            tabBarIcon: ({ color }) => {
                               return <MaterialCommunityIcons name="fridge" size={28} color={color} />
-                          }
+                            }
                         }} component={Products}
                     />
                     <Tab.Screen
                         name="Scan"
                         options={{
+                            headerShown: false,
                             tabBarIcon: ({color}) => {
                               return <MaterialCommunityIcons name="barcode-scan" size={28} color={color} />
                             }
@@ -75,6 +79,8 @@ export default function App() {
                     <Tab.Screen
                         name="Profile"
                         options={{
+                            header: () => <NavBar />,
+                            headerShown: true,
                             tabBarIcon: ({color}) => {
                               return <FontAwesome name="user" size={24} color={color} />
                             }

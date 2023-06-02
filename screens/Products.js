@@ -1,5 +1,4 @@
 import styled from "styled-components/native";
-import Searchbar from "../components/Searchbar";
 import {FlatList, RefreshControl, ScrollView, View} from "react-native";
 import {useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -58,7 +57,6 @@ export const Products = () => {
 
     return (
         <Container>
-            <Searchbar />
             <HouseNameContent>
                 <FontAwesome name="home" size={28} color="black" />
                 <HouseName>{homeName}</HouseName>
