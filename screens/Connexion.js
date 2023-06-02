@@ -103,7 +103,6 @@ export const Logo = styled.Image`
 `;
 
 export const TitlePage = styled.Text`
-  //font-family: 'Roboto-Regular';
   font-size: 32px;
   font-weight: normal;
   line-height: 27px;
