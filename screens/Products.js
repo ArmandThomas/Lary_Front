@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 import Searchbar from "../components/Searchbar";
-import {RefreshControl, ScrollView, View} from "react-native";
+import {FlatList, RefreshControl, ScrollView, View} from "react-native";
 import {useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {UrlLary} from "../utils";
@@ -63,23 +63,22 @@ export const Products = () => {
                 <FontAwesome name="home" size={28} color="black" />
                 <HouseName>{homeName}</HouseName>
             </HouseNameContent>
-            <ScrollView
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={{padding: 20}}
-            >
-                <FilterProductsContent>
-                    {productTypes.map(type => (
+            <FilterProductsContent>
+                <FlatList
+                    horizontal
+                    data = {productTypes}
+                    renderItem={({item}) => (
                         <FilterProductsButton
-                            key={type}
-                            active={filterProducts === type}
-                            onPress={() => setFilterProducts(type)}
+                            key={item}
+                            active={filterProducts === item}
+                            onPress={() => setFilterProducts(item)}
                         >
-                            <FilterProductsText active={filterProducts === type}>{type}</FilterProductsText>
+                            <FilterProductsText active={filterProducts === item}>{item}</FilterProductsText>
                         </FilterProductsButton>
-                    ))}
-                </FilterProductsContent>
-            </ScrollView>
+                    )}
+                    showsHorizontalScrollIndicator={false}
+                />
+            </FilterProductsContent>
             <ScrollView
                 style={{flex: 1, width: "100%"}}
                 refreshControl={
