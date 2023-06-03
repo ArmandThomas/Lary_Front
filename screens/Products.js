@@ -52,7 +52,7 @@ export const Products = () => {
             }
         });
         const response = await request.json();
-        if (response.name) {
+        if (response && response.name) {
             setHomeName(response.name);
         }
     }

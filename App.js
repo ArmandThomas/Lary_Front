@@ -19,7 +19,7 @@ const Tab = createBottomTabNavigator();
 
 export default function App() {
 
-    const [isLogin, setIsLogin] = useState(false);
+    const [isLogin, setIsLogin] = useState(undefined);
 
     useEffect(() => {
         AsyncStorage.getItem('token').then((value) => {
@@ -33,10 +33,18 @@ export default function App() {
                     if (response._id) {
                         setIsLogin(true);
                     }
+                }).catch((error) => {
+                    setIsLogin(false);
                 })
+            } else {
+                setIsLogin(false);
             }
         })
     }, [])
+
+    if (isLogin === undefined) {
+        return null;
+    }
 
     return (
         isLogin ? (

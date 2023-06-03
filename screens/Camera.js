@@ -35,6 +35,7 @@ export const Camera = () => {
         const data = await request.json();
         const product = data.products[0];
         if (!product) {
+            setIsScanning(false)
             return Alert.alert("Erreur", "Le produit n'a pas été trouvé dans la base de donnée OpenFoodFact");
         }
         const {abbreviated_product_name_fr, brands, ingredients_text_fr, image_url, nutrition_grade_fr, product_name_fr} = product;
@@ -90,7 +91,7 @@ export const Camera = () => {
 
             </Modal>
             {
-                Object.keys(dataModal).length === 0
+                Object.keys(dataModal).length === 0 && isFocused && hasPermission
                 && <ExpoCamera style={{flex : 1}} type={ExpoCamera.Constants.Type.back} onBarCodeScanned={handleBarCodeScanned} />
             }
 
