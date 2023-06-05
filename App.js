@@ -107,13 +107,20 @@ export default function App() {
                 <Stack.Navigator>
                     <Stack.Screen
                         name="Connexion"
+                        options={{
+                            headerShown: false
+                        }}
                     >
                         {
                             props => <Connexion {...props} setIsLogin={setIsLogin} />
                         }
                     </Stack.Screen>
                     <Stack.Screen
-                        name="Inscription">
+                        name="Inscription"
+                        options={{
+                            headerShown: false
+                        }}
+                    >
                         {
                             props => <Inscription {...props} setIsLogin={setIsLogin} />
                         }

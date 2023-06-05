@@ -1,6 +1,16 @@
 import {Pressable, KeyboardAvoidingView, useWindowDimensions, Alert} from "react-native";
 import styled from "styled-components/native";
-import {ButtonContainer, ButtonText, Input, InputContainer, LinkText, Logo, QuestionText, TitlePage} from "./Connexion";
+import {
+    ButtonContainer,
+    ButtonText,
+    IconViewPassword,
+    Input,
+    InputContainer,
+    LinkText,
+    Logo,
+    QuestionText,
+    TitlePage
+} from "./Connexion";
 import {useState} from "react";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {UrlLary} from "../utils";
@@ -10,6 +20,7 @@ export const Inscription = ({navigation, setIsLogin}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [secureTextEntry, setSecureTextEntry] = useState(true);
 
     const width = useWindowDimensions().width;
     const imageWidth = width * 0.9;
@@ -45,6 +56,9 @@ export const Inscription = ({navigation, setIsLogin}) => {
             style={{ flex: 1 }}
         >
             <Container>
+                <BackIconBox onPress={() => navigation.goBack()}>
+                    <Icon name="chevron-left" size={30} color="#33efad" />
+                </BackIconBox>
                 <Logo
                     source={require('../assets/images/logo_lary_blanc.png')}
                     resizeMode="contain"
@@ -72,17 +86,23 @@ export const Inscription = ({navigation, setIsLogin}) => {
                         value={password}
                         onChangeText={setPassword}
                     />
+                    <IconViewPassword onPress={() => setSecureTextEntry(previousState => !previousState)}>
+                        <Icon name={secureTextEntry ? "eye-slash" : "eye"} size={24} color="#33efab" />
+                    </IconViewPassword>
                 </InputContainer>
 
                 <InputContainer>
                     <Icon name="lock" size={30} color="#33efad" />
                     <Input
-                        placeholder="Confirmer le mot de passe"
+                        placeholder="Confirmer mot de passe"
                         placeholderTextColor="#9E9E9E"
-                        secureTextEntry
+                        secureTextEntry={secureTextEntry}
                         value={passwordConfirm}
                         onChangeText={setPasswordConfirm}
                     />
+                    <IconViewPassword onPress={() => setSecureTextEntry(previousState => !previousState)}>
+                        <Icon name={secureTextEntry ? "eye-slash" : "eye"} size={24} color="#33efab" />
+                    </IconViewPassword>
                 </InputContainer>
 
                 <ButtonContainer
@@ -105,4 +125,13 @@ const Container = styled.View`
     justify-content: center;
     align-items: center;
     background: #1E1E1E;
+`;
+
+const BackIconBox = styled.TouchableOpacity`
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    z-index: 1;
 `;
