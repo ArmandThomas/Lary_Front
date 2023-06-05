@@ -21,6 +21,8 @@ export default function App() {
 
     const [isLogin, setIsLogin] = useState(undefined);
 
+    const [refreshToken, setRefreshToken] = useState(false);
+
     useEffect(() => {
         AsyncStorage.getItem('token').then((value) => {
             if (value !== null) {
@@ -40,7 +42,11 @@ export default function App() {
                 setIsLogin(false);
             }
         })
-    }, [])
+    }, [refreshToken])
+
+    const handleRemoveToken = () => {
+        setRefreshToken(prevState => !prevState)
+    }
 
     if (isLogin === undefined) {
         return null;
@@ -68,7 +74,7 @@ export default function App() {
                     <Tab.Screen
                         name="Produits"
                         options={{
-                            header: () => <NavBar />,
+                            header: () => <NavBar refreshToken={handleRemoveToken}/>,
                             headerShown: true,
                             tabBarIcon: ({ color }) => {
                               return <MaterialCommunityIcons name="fridge" size={28} color={color} />
@@ -87,7 +93,7 @@ export default function App() {
                     <Tab.Screen
                         name="Profile"
                         options={{
-                            header: () => <NavBar />,
+                            header: () => <NavBar refreshToken={handleRemoveToken}/>,
                             headerShown: true,
                             tabBarIcon: ({color}) => {
                               return <FontAwesome name="user" size={24} color={color} />
