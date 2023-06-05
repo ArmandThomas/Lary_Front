@@ -9,6 +9,7 @@ export const Connexion = ({navigation, setIsLogin}) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [secureTextEntry, setSecureTextEntry] = useState(true);
 
     const width = useWindowDimensions().width;
     const imageWidth = width * 0.9;
@@ -61,16 +62,19 @@ export const Connexion = ({navigation, setIsLogin}) => {
                 />
             </InputContainer>
 
-            <InputContainer>
-                <Icon name="lock" size={30} color="#33efad" />
-                <Input
-                    placeholder="Mot de passe"
-                    placeholderTextColor="#9E9E9E"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                />
-            </InputContainer>
+                <InputContainer>
+                    <Icon name="lock" size={30} color="#33efad" />
+                    <Input
+                        placeholder="Mot de passe"
+                        placeholderTextColor="#9E9E9E"
+                        secureTextEntry={secureTextEntry}
+                        value={password}
+                        onChangeText={setPassword}
+                    />
+                    <IconViewPassword onPress={() => setSecureTextEntry(previousState => !previousState)}>
+                        <Icon name={secureTextEntry ? "eye-slash" : "eye"} size={24} color="#33efab" />
+                    </IconViewPassword>
+                </InputContainer>
 
             <ButtonContainer
                 onPress={handleLogIn}
@@ -132,6 +136,12 @@ export const Input = styled.TextInput`
   color: #ffffff;
   padding-left: 10px;
   padding-right: 20px;
+`;
+
+export const IconViewPassword = styled.Pressable`
+    position: absolute;
+    right: 0;
+    bottom: 10px;
 `;
 
 export const ButtonContainer = styled.Pressable`
