@@ -18,6 +18,8 @@ export const CardDate = ({ date, products }) => {
     const month = months[date.getMonth()];
     const day = days[date.getDay()];
 
+    const year = date.getFullYear();
+
 
     return (
         <ContainerCardDate
@@ -26,14 +28,14 @@ export const CardDate = ({ date, products }) => {
                 <TextDay>
                     {day} {date.getDate()}
                 </TextDay>
-                <TextMonth>{month}</TextMonth>
+                <TextMonth>{month} {year}</TextMonth>
             </ContainerDate>
             <ContainerContent>
                 <ScrollView>
                     {
                         productsOfTheDay.map(product =>
                             <Product key={product._id}>
-                                <Image style={{width: 32, height: 32}} source={{uri: product.image}}/>
+                                <Image style={{width: 32, height: 32, borderRadius : 32}} source={{uri: product.image}}/>
                                 <ProductText>{product.name}</ProductText>
                             </Product>
                         )
@@ -79,6 +81,7 @@ const Product = styled.View`
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+  margin: 2px 0;
 `;
 
 const ProductText = styled.Text`
