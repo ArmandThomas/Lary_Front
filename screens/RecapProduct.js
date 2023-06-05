@@ -1,4 +1,4 @@
-import {Alert, View} from "react-native";
+import {Alert, ScrollView, Text, View} from "react-native";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
 import {Entypo} from "@expo/vector-icons";
@@ -33,80 +33,118 @@ export const RecapProduct = ({route}) => {
     }, []);
     return (
         <Container>
-            <ArrowBack>
-                <Entypo
-                    name="chevron-left"
-                    size={24}
-                    color="black"
-                    onPress={() => navigation.goBack()}
-                />
-            </ArrowBack>
-            {
-                Object.keys(data).length > 0 &&
-                <View>
-                    <ContainerImageAndInfo>
-                        <ImageContainerProduct>
-                            <ImageProduct source={{uri: data.image_url}}/>
-                        </ImageContainerProduct>
-                        <InfoContainerProduct>
-                            <TitleProduct>{
-                                data.abbreviated_product_name_fr || data.product_name_fr
-                            }</TitleProduct>
-                            <ContainerBrandAndWeight>
-                                <BrandProduct>
-                                    {
-                                        data.brands
-                                    }
-                                </BrandProduct>
-                                <WeightProduct>
-                                    {
-                                        data.quantity
-                                    }
-                                </WeightProduct>
-                            </ContainerBrandAndWeight>
-                        </InfoContainerProduct>
-                    </ContainerImageAndInfo>
-                    <ContainerNutritionGradeEcoGradeNovaGrade>
-                        <ImageNutritionGrade source={{uri: `https://static.openfoodfacts.org/images/misc/nutriscore-${data.nutrition_grades}.png`}}/>
-                        <ImageNovaGrade source={{uri: `https://static.openfoodfacts.org/images/attributes/nova-group-${data.nova_group}.png`}}/>
-                        {
-                            data.ecoscore_grade && data.ecoscore_grade !== 'unknown' &&
-                            <ImageEcoGrade source={{uri: `https://static.openfoodfacts.org/images/icons/ecoscore-${data.ecoscore_grade}.png`}}/>
-                        }
-                    </ContainerNutritionGradeEcoGradeNovaGrade>
-                    <ContainerNutrimentsBy100G>
-                        <TextNutrimentsBy100G>
-                            Nutriments pour 100g :
-                        </TextNutrimentsBy100G>
-                        <TextKcal>
-                            {data.nutriments.energy_value} kcal
-                        </TextKcal>
-                        <ContainerNutriments>
+            <GlobalBackBox>
+                <BackBoxProduct onPress={() => navigation.goBack()}>
+                    <View>
+                        <Entypo
+                            name="chevron-left"
+                            size={28}
+                            color="black"
+                        />
+                    </View>
+                </BackBoxProduct>
+            </GlobalBackBox>
+            <ScrollView>
+                {
+                    Object.keys(data).length > 0 &&
+                    <ContainerProduct>
+                        <ContainerImageAndInfo>
+                            <ImageContainerProduct>
+                                <ImageProduct source={{uri: data.image_url}}/>
+                            </ImageContainerProduct>
+                            <InfoContainerProduct>
+                                <TitleProduct>{
+                                    data.abbreviated_product_name_fr || data.product_name_fr
+                                }</TitleProduct>
+                                <ContainerBrandAndWeight>
+                                    <BrandProduct>
+                                        {
+                                            data.brands
+                                        }
+                                    </BrandProduct>
+                                    <WeightProduct>
+                                        {
+                                            data.quantity
+                                        }
+                                    </WeightProduct>
+                                </ContainerBrandAndWeight>
+                            </InfoContainerProduct>
+                        </ContainerImageAndInfo>
+                        <ContainerNutritionGradeEcoGradeNovaGrade>
+                            <ImageNutritionGrade source={{uri: `https://static.openfoodfacts.org/images/misc/nutriscore-${data.nutrition_grades}.png`}}/>
+                            <ImageNovaGrade source={{uri: `https://static.openfoodfacts.org/images/attributes/nova-group-${data.nova_group}.png`}}/>
+                            {
+                                data.ecoscore_grade && data.ecoscore_grade !== 'unknown' &&
+                                <ImageEcoGrade source={{uri: `https://static.openfoodfacts.org/images/icons/ecoscore-${data.ecoscore_grade}.png`}}/>
+                            }
+                        </ContainerNutritionGradeEcoGradeNovaGrade>
+                        <ContainerNutrimentsBy100G>
+                            <TextNutrimentsBy100G>
+                                Repères nutritionnels pour 100g :
+                            </TextNutrimentsBy100G>
+                            <ContainerNutriments>
+                                <TextNutriments>
+                                    Valeur énergétique : {data.nutriments.energy_value} kcal
+                                </TextNutriments>
+                                <TextNutriments>
+                                    Matières grasses / Lipides : {data.nutriments.fat_100g} g
+                                </TextNutriments>
+                                <TextNutriments>
+                                    Acides gras saturés : {data.nutriments["saturated-fat_100g"]} g
+                                </TextNutriments>
+                                <TextNutriments>
+                                    Glucides : {data.nutriments.carbohydrates_100g} g
+                                </TextNutriments>
+                                <TextNutriments>
+                                    Sucres : {data.nutriments.sugars_100g} g
+                                </TextNutriments>
+                                <TextNutriments>
+                                    Fibres alimentaires : {data.nutriments.fiber_100g} g
+                                </TextNutriments>
+                                <TextNutriments>
+                                    Protéines : {data.nutriments.proteins_100g} g
+                                </TextNutriments>
+                                <TextNutriments>
+                                    Sel : {data.nutriments.salt_100g} g
+                                </TextNutriments>
+                            </ContainerNutriments>
+                        </ContainerNutrimentsBy100G>
+                        <ContainerNutrimentsBy100G>
+                            <TextNutrimentsBy100G>
+                                Allergènes :
+                            </TextNutrimentsBy100G>
                             <TextNutriments>
-                                Matières grasses / Lipides : {data.nutriments.fat_100g}g
+                                {data.allergens_from_ingredients}
                             </TextNutriments>
+                        </ContainerNutrimentsBy100G>
+                        <ContainerNutrimentsBy100G>
+                            <TextNutrimentsBy100G>
+                                Labels :
+                            </TextNutrimentsBy100G>
                             <TextNutriments>
-                                Acides gras saturés : {data.nutriments["saturated-fat_100g"]}g
+                                {data.labels}
                             </TextNutriments>
+                        </ContainerNutrimentsBy100G>
+                        <ContainerNutrimentsBy100G>
+                            <TextNutrimentsBy100G>
+                                Catégories :
+                            </TextNutrimentsBy100G>
                             <TextNutriments>
-                                Sucres : {data.nutriments.sugars_100g}g
+                                {data.categories}
                             </TextNutriments>
-                            <TextNutriments>
-                                Sel : {data.nutriments.salt_100g}g
-                            </TextNutriments>
-                        </ContainerNutriments>
-                    </ContainerNutrimentsBy100G>
-                </View>
-
-            }
+                        </ContainerNutrimentsBy100G>
+                    </ContainerProduct>
+                }
+            </ScrollView>
         </Container>
     )
 }
 
 const Container = styled.View`
+    flex: 1;
 `;
 const ImageContainerProduct = styled.View`
-  width: 40%;
+  width: 45%;
 `;
 
 const ImageProduct = styled.Image`
@@ -118,11 +156,11 @@ const ImageProduct = styled.Image`
 const ContainerImageAndInfo = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding: 20px;
+  padding: 0 20px;
 `;
 
 const InfoContainerProduct = styled.View`
-  width: 60%;
+  width: 50%;
   margin-left: 10px;
 `;
 
@@ -143,6 +181,10 @@ const WeightProduct = styled.Text`
   font-size: 16px;
 `;
 
+const ContainerProduct = styled.View`
+  padding: 10px 0;
+`;
+
 const ContainerNutritionGradeEcoGradeNovaGrade = styled.View`
   flex-direction: row;
   justify-content: space-evenly;
@@ -151,8 +193,8 @@ const ContainerNutritionGradeEcoGradeNovaGrade = styled.View`
 `;
 
 const ImageNutritionGrade = styled.Image`
-  width: 50px;
-  height: 70px;
+  width: 80px;
+  height: 100px;
   resize-mode: contain;
 `;
 const ImageNovaGrade = styled.Image`
@@ -162,30 +204,35 @@ const ImageNovaGrade = styled.Image`
 `;
 
 const ImageEcoGrade = styled.Image`
-  width: 50px;
-  height: 70px;
+  width: 80px;
+  height: 100px;
   resize-mode: contain;
 `;
 
 const ContainerNutrimentsBy100G = styled.View`
-  padding: 20px;
+  padding: 10px 20px;
 `;
 const TextNutrimentsBy100G = styled.Text`
   font-size: 16px;
   font-weight: bold;
 `;
 const ContainerNutriments = styled.View`
-  margin-top: 10px;
+  margin-top: 5px;
 `;
 const TextNutriments = styled.Text`
   font-size: 16px;
 `;
 
-const ArrowBack = styled.View`
-  margin-top: 10px;
-  margin-left: 10px;
+const GlobalBackBox = styled.View`
+  margin-top: 15px;
+  margin-left: 15px;
+  margin-bottom: 5px;
+  z-index: 10;
 `;
 
-const TextKcal = styled.Text`
-  font-size: 16px;
+const BackBoxProduct = styled.TouchableOpacity`
+  width: 40px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
 `;

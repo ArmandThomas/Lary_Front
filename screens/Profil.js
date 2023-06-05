@@ -285,7 +285,7 @@ export const Profil = () => {
                                     <TouchableOpacity
                                         onPress={() => setUserWantToInviteHome(true)}
                                     >
-                                        <TextAddUser>Add a user :</TextAddUser>
+                                        <TextAddUser>Ajouter un utilisateur :</TextAddUser>
                                         <AntDesign
                                             name="adduser"
                                             size={32}
@@ -293,9 +293,7 @@ export const Profil = () => {
                                             style={{alignSelf: 'center', marginTop : 10}}
                                         />
                                     </TouchableOpacity>
-
                             }
-
 
                         </View>
                             :
@@ -310,7 +308,7 @@ export const Profil = () => {
                                                         <HouseNameContent
                                                         >
                                                             <MaterialIcons name="add-circle-outline" size={24} color="#33efad" />
-                                                            <TextCreateNewHome>Créer une maison</TextCreateNewHome>
+                                                            <TextCreateNewHome>Ajouter une maison</TextCreateNewHome>
                                                         </HouseNameContent>
                                                     </TouchableOpacity>
                                                     :
@@ -346,7 +344,7 @@ export const Profil = () => {
                                         </View>
                                 <Hr/>
                                 <ContentInvitation>
-                                    <Text>Invitations recues ({invitedHome.length})</Text>
+                                    <Text>Invitations reçues ({invitedHome.length})</Text>
                                     <ContainerListInvitation>
                                         <ScrollView>
                                             {
@@ -370,6 +368,7 @@ export const Profil = () => {
 
                 <View>
                     <Hr/>
+                    <TitleContent>Vos prochaines dates de péremption :</TitleContent>
                     <ContainerCalendar>
                         <FlatList data={dates} renderItem={
                             ({item}) => <CardDate date={item} products={products}/>
@@ -406,7 +405,7 @@ const LeaveHomeButton = styled.TouchableOpacity`
   border-style: solid;
   border-radius: 18px;
   padding: 8px 16px;
-  margin: 10px 5px;
+  margin: 18px 5px 10px;
   align-self: center;
 `;
 
@@ -485,6 +484,15 @@ const TextInputAddUser = styled.TextInput`
 `;
 
 const ContainerCalendar = styled.View`
-    margin-top: 20px;
+    margin-top: 5px;
     padding: 0 20px;
+`;
+
+const TitleContent = styled.Text`
+    font-size: 16px;
+    font-weight: bold;
+    font-style: normal;
+    color: #000;
+    align-self: center;
+    margin-top: 25px;
 `;
