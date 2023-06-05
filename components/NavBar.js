@@ -1,10 +1,20 @@
-import React from 'react';
-import {SafeAreaView, Platform, StatusBar} from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, Platform, StatusBar, Modal, TouchableOpacity, Text } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import styled from 'styled-components/native';
-import { Ionicons } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import Logo from '../assets/images/logo_lary_blanc.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const NavBar = () => {
+export const NavBar = ({refreshToken}) => {
+    const navigation = useNavigation();
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const handleLogout = async () => {
+        await AsyncStorage.removeItem('token');
+        setModalVisible(false);
+        refreshToken();
+    }
 
     return (
         <SafeArea
@@ -16,8 +26,42 @@ export const NavBar = () => {
                 <LogoContainer>
                     <LogoImage source={Logo} />
                 </LogoContainer>
-                <Ionicons name="ios-settings-sharp" size={28} color="white" />
+                <MaterialIcons
+                    name="logout"
+                    size={28}
+                    color="white"
+                    onPress={() => setModalVisible(true)}
+                />
             </NavbarContainer>
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}
+            >
+                <CenteredView>
+                    <ModalView>
+                        <Text style={{marginBottom: 10}}>Voulez-vous vous déconnecter ?</Text>
+                        <ButtonContainer>
+                            <CanceledButton
+                                style={{ margin: 10 }}
+                                onPress={() => setModalVisible(!modalVisible)}
+                            >
+                                <TextCanceledButton>Annuler</TextCanceledButton>
+                            </CanceledButton>
+                            <LogoutButton
+                                style={{ margin: 10 }}
+                                onPress={handleLogout}
+                            >
+                                <TextLogoutButton>Déconnexion</TextLogoutButton>
+                            </LogoutButton>
+                        </ButtonContainer>
+                    </ModalView>
+                </CenteredView>
+            </Modal>
         </SafeArea>
     )
 }
@@ -25,7 +69,6 @@ export const NavBar = () => {
 const SafeArea = styled(SafeAreaView)`
   background-color: #33efab;
   width: 100%;
-  
 `;
 
 const NavbarContainer = styled.View`
@@ -44,7 +87,51 @@ const LogoContainer = styled.View`
 `;
 
 const LogoImage = styled.Image`
-    width: 100%;
-    height: 100%;
-    resize-mode: contain;
+  width: 100%;
+  height: 100%;
+  resize-mode: contain;
+`;
+
+const CenteredView = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0,0,0,0.5);
+`;
+
+const ModalView = styled.View`
+  width: 80%;
+  background-color: white;
+  padding: 35px;
+  align-items: center;
+  elevation: 5;
+`;
+
+const ButtonContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const CanceledButton = styled.TouchableOpacity`
+    border: 1px solid #33efab;
+    padding: 8px 16px;
+    margin: 10px 5px;
+    border-radius: 18px;
+`;
+
+const TextCanceledButton = styled.Text`
+    color: #33efab;
+`;
+
+const LogoutButton = styled.TouchableOpacity`
+    border: 1px solid red;
+    color: red;
+    padding: 8px 16px;
+    margin: 10px 5px;
+    border-radius: 18px;
+`;
+
+const TextLogoutButton = styled.Text`
+    color: red;
 `;
