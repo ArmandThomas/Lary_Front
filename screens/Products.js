@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 import {Alert, FlatList, RefreshControl, ScrollView, View} from "react-native";
-import {useIsFocused} from "@react-navigation/native";
+import {NavigationContainer, useIsFocused} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {UrlLary} from "../utils";
 import {CardProduct} from "../components/CardProduct";
@@ -8,6 +8,11 @@ import {useEffect, useState} from "react";
 import { FontAwesome } from '@expo/vector-icons';
 import {productTypes} from "../utils";
 import {ButtonStockage} from "../components/ButtonStockage";
+import {createStackNavigator} from "@react-navigation/stack";
+import {Connexion} from "./Connexion";
+import {RecapProduct} from "./RecapProduct";
+
+const Stack = createStackNavigator();
 
 export const Products = () => {
     const isFocused = useIsFocused();
@@ -97,43 +102,54 @@ export const Products = () => {
     const filteredData = filterProducts === 'Tout' ? products : products.filter(product => product.where === filterProducts.toLocaleLowerCase());
 
     return (
-        <Container>
-            <HouseNameContent>
-                <FontAwesome name="home" size={28} color="black" />
-                <HouseName>{homeName}</HouseName>
-            </HouseNameContent>
-            <FilterProductsContent>
-                <FlatList
-                    horizontal
-                    data = {productTypes}
-                    renderItem={({item}) => (
-                        <ButtonStockage key={item} currentFilter={filterProducts} data={item} updateFilter={setFilterProducts}/>
-                    )}
-                    showsHorizontalScrollIndicator={false}
-                    style={{paddingLeft: 15}}
-                />
-            </FilterProductsContent>
-            <ScrollView
-                style={{flex: 1, width: "100%"}}
-                refreshControl={
-                    <RefreshControl refreshing={refreshing} onRefresh={refresh} />
-                }
-            >
-                <ContainerListCardProduct>
+            <Stack.Navigator>
+                <Stack.Screen name="Products" options={{headerShown: false}}>
                     {
-                        filteredData.map(product =>
-                            <CardProduct
-                                key={product._id}
-                                product={product}
-                                updateQuantityMethod={updateQuantity}
-                                deleteProductMethod={deleteProduct}
-                            />)
+                        props => <Container>
+                            <HouseNameContent>
+                                <FontAwesome name="home" size={28} color="black" />
+                                <HouseName>{homeName}</HouseName>
+                            </HouseNameContent>
+                            <FilterProductsContent>
+                                <FlatList
+                                    horizontal
+                                    data = {productTypes}
+                                    renderItem={({item}) => (
+                                        <ButtonStockage key={item} currentFilter={filterProducts} data={item} updateFilter={setFilterProducts}/>
+                                    )}
+                                    showsHorizontalScrollIndicator={false}
+                                    style={{paddingLeft: 15}}
+                                />
+                            </FilterProductsContent>
+                            <ScrollView
+                                style={{flex: 1, width: "100%"}}
+                                refreshControl={
+                                    <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+                                }
+                            >
+                                <ContainerListCardProduct>
+                                    {
+                                        filteredData.map(product =>
+                                            <CardProduct
+                                                key={product._id}
+                                                product={product}
+                                                updateQuantityMethod={updateQuantity}
+                                                deleteProductMethod={deleteProduct}
+                                            />)
+                                    }
+                                </ContainerListCardProduct>
+
+                            </ScrollView>
+
+                        </Container>
                     }
-                </ContainerListCardProduct>
-
-            </ScrollView>
-
-        </Container>
+                </Stack.Screen>
+                <Stack.Screen
+                    name="recapProduct"
+                    component={RecapProduct}
+                    options={{headerShown: false}}
+                />
+            </Stack.Navigator>
     )
 }
 

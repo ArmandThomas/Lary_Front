@@ -1,7 +1,8 @@
 import styled from "styled-components/native";
-import {Alert, Image, Text, useWindowDimensions} from "react-native";
+import {Alert, Image, Pressable, Text, useWindowDimensions} from "react-native";
 import {Ionicons, MaterialIcons} from "@expo/vector-icons";
 import {useEffect, useState} from "react";
+import {useNavigation} from "@react-navigation/native";
 
 export const CardProduct = ({product, updateQuantityMethod, deleteProductMethod}) => {
 
@@ -26,17 +27,27 @@ export const CardProduct = ({product, updateQuantityMethod, deleteProductMethod}
 
     const widthImage = widthScreen / 5;
 
+
+
     return (
         <ContainerCardProduct>
-            <Image
-                style={{width: widthImage, height : 90, resizeMode: 'contain'}}
-                source={{uri: product.image}}
-            />
+            <NavigateToProduct
+                data={product}
+            >
+                <Image
+                    style={{width: widthImage, height : 90, resizeMode: 'contain'}}
+                    source={{uri: product.image}}
+                />
+            </NavigateToProduct>
             <ContainerTitleBrand>
                 <ContainerWithLeftStuff>
                     <ContainerLeft>
-                        <TitleProduct numberOfLines={1}>{product.name}</TitleProduct>
-                        <TitleBrand numberOfLines={1}>{product.brand}</TitleBrand>
+                        <NavigateToProduct
+                            data={product}
+                        >
+                            <TitleProduct numberOfLines={1}>{product.name}</TitleProduct>
+                            <TitleBrand numberOfLines={1}>{product.brand}</TitleBrand>
+                        </NavigateToProduct>
                     </ContainerLeft>
                     <ContainerIconsQuantity>
                         <Ionicons
@@ -62,17 +73,22 @@ export const CardProduct = ({product, updateQuantityMethod, deleteProductMethod}
                 </ContainerWithLeftStuff>
                 <ContainerWithLeftStuff>
                     <ContainerLeft second>
-                        <ImageProduct
-                            source={{uri: `https://static.openfoodfacts.org/images/misc/nutriscore-${product.nutritionGrade}.png`}}
-                            style={{width: 100, height: 50}}
-                            resizeMode="contain"
-                        />
-                        {
-                            product.expirationDate &&
-                            <ContainerExpiration>
-                                <Text>Exp : {new Date(product.expirationDate).toLocaleDateString()}</Text>
-                            </ContainerExpiration>
-                        }
+                        <NavigateToProduct
+                            data={product}
+                        >
+                            <ImageProduct
+                                source={{uri: `https://static.openfoodfacts.org/images/misc/nutriscore-${product.nutritionGrade}.png`}}
+                                style={{width: 100, height: 50}}
+                                resizeMode="contain"
+                            />
+                            {
+                                product.expirationDate &&
+                                <ContainerExpiration>
+                                    <Text>Exp : {new Date(product.expirationDate).toLocaleDateString()}</Text>
+                                </ContainerExpiration>
+                            }
+                        </NavigateToProduct>
+
                     </ContainerLeft>
                     <ContainerDeleteIcon>
                         <MaterialIcons
@@ -143,3 +159,19 @@ const QuantityText = styled.Text`
 const ImageProduct = styled.Image`
     margin: 5px 0;
 `;
+
+const NavigateToProduct = ({children, data}) => {
+
+    const navigation = useNavigation();
+
+    return (
+        <Pressable
+            onPress={() =>
+                navigation.navigate('recapProduct', {barcode : data.barcode})
+            }
+        >
+            {children}
+        </Pressable>
+    )
+
+};

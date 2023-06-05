@@ -21,16 +21,6 @@ export const Profil = () => {
     const [userWantToCreateHome, setUserWantToCreateHome] = useState(false);
     const [userWantToInviteHome, setUserWantToInviteHome] = useState(false);
 
-    const cartes = [
-        { date: new Date(), infos: 'Infos 1' },
-        { date: new Date(), infos: 'Infos 2' },
-        { date: new Date(), infos: 'Infos 3' },
-        { date: new Date(), infos: 'Infos 4' },
-        { date: new Date(), infos: 'Infos 5' },
-        { date: new Date(), infos: 'Infos 6' },
-        // Ajoutez autant de cartes que vous le souhaitez ici
-    ];
-
     const getInvitedHome = async () => {
 
 
